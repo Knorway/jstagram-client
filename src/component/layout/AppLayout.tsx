@@ -1,6 +1,7 @@
 import React, { Fragment, PropsWithChildren } from 'react';
-import { useQuery } from 'react-query';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+
+import { useQuery } from '@tanstack/react-query';
 
 import { validateAuth } from '../../api/fetcher';
 import { queryKey } from '../../api/queryClient';
@@ -9,9 +10,13 @@ import Header from './Header';
 const excluded = ['/login', '/register', '/auth-redirect'];
 
 const AppLayout = () => {
-	const { pathname } = useLocation();
 	const navigate = useNavigate();
-	const { data: user } = useQuery(queryKey.validation, validateAuth);
+	const { pathname } = useLocation();
+	const { data: user } = useQuery(queryKey.validation, validateAuth, {
+		onError: () => {
+			navigate('/login');
+		},
+	});
 
 	if (excluded.includes(pathname)) {
 		return <Outlet />;
@@ -34,7 +39,7 @@ const AppLayout = () => {
 
 const Container: React.FC<PropsWithChildren> = (props) => {
 	return (
-		<div className='bg-gray-50 min-h-screen h-screen'>
+		<div className='bg-gray-50 min-h-screen'>
 			<div className='container relative mx-auto xl:max-w-3xl h-full'>
 				{props.children}
 			</div>

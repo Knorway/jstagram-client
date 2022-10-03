@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios';
-import { useQuery } from 'react-query';
+
+import { useQuery } from '@tanstack/react-query';
 
 import { queryKey } from '../api/queryClient';
 import { AppUser } from '../api/types';

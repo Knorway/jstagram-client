@@ -7,22 +7,47 @@ export type Unwrap<T extends Promise<unknown>> = T extends Promise<infer U> ? U 
 export type AppUser = {
 	id: number;
 	email: string;
+	provider: string;
 };
 
-export type UploadPostInput = {
-	content: string;
-	image: FileList;
-};
-
-export type UploadPostResponse = {
+export type CreatePostResponse = {
 	postId: number;
 };
 
-export type QueryPostsResponse = {
-	userId: number;
-	postId: number;
-	imgSrc: string;
+export interface QueryPostsResponse {
+	id: number;
 	content: string;
+	imgUrl: string;
 	createdAt: string;
-	updatedAt: string;
-};
+	user: QueryPostResponseUser;
+	comments?: Comment[];
+	likes?: Likes;
+}
+
+export interface Comment {
+	content: string;
+	user: CommentUser;
+}
+
+export interface CommentUser {
+	id: number;
+	username: string;
+}
+
+export interface Likes {
+	id: number;
+	likes: number;
+	user: Post;
+	post: Post;
+	liked: boolean;
+}
+
+export interface Post {
+	id: number;
+}
+
+export interface QueryPostResponseUser {
+	id: number;
+	username: string;
+	provider: string;
+}

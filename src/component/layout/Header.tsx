@@ -30,7 +30,7 @@ const Header = () => {
 
 const Container: React.FC<PropsWithChildren> = (props) => {
 	return (
-		<div className='flex items-center justify-center py-3 border-b'>
+		<div className='flex items-center justify-center py-3 border-b sticky inset-0 bg-white z-10'>
 			<nav className='container flex items-center justify-between py-2 mx-auto xl:max-w-4xl md:py-0'>
 				{props.children}
 			</nav>

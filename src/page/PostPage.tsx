@@ -2,16 +2,20 @@ import React, {
   ChangeEventHandler,
   PropsWithChildren,
   useCallback,
-  useEffect,
   useState,
 } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { uploadPost } from '../api/fetcher';
-import { UploadPostInput } from '../api/types';
+import { useMutation } from '@tanstack/react-query';
+
+import { createPost } from '../api/fetcher';
 import HeroIcon from '../component/icon/HeroIcon';
+
+export type UploadPostInput = {
+	content: string;
+	image: FileList;
+};
 
 const PostCreatePage = () => {
 	const [previewSrc, setPreviewSrc] =
@@ -19,7 +23,7 @@ const PostCreatePage = () => {
 	const { handleSubmit, register } = useForm<UploadPostInput>();
 	const navigate = useNavigate();
 
-	const { mutate, data } = useMutation(uploadPost, {
+	const { mutate } = useMutation(createPost, {
 		onSuccess: () => {
 			navigate('/');
 		},
@@ -44,12 +48,6 @@ const PostCreatePage = () => {
 		},
 		[mutate]
 	);
-
-	useEffect(() => {
-		if (data) {
-			console.log(data);
-		}
-	}, [data]);
 
 	return (
 		<Container>
@@ -99,7 +97,9 @@ const PostCreatePage = () => {
 
 const Container: React.FC<PropsWithChildren> = (props) => {
 	return (
-		<div className='flex items-center justify-center h-full'>{props.children}</div>
+		<div className='flex items-center justify-center min-h-screen'>
+			{props.children}
+		</div>
 	);
 };
 
